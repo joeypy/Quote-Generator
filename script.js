@@ -21,9 +21,7 @@ function hideLoadingSpinner() {
 
 async function getQuote () {
     showLoadingSpinner()
-    // We need to use a Proxy URL to make our API call in order to avoid the cors
-    const proxyUrl = "https://cors-anywhere.herokuapp.com/"
-    const apiUrl = "http://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json"
+    const apiUrl = "https://api.quotable.io/random"
     try {
         const response = await fetch(apiUrl)
         const data = await response.json()
@@ -31,15 +29,15 @@ async function getQuote () {
         if ( data.quoteAuthor === '') {
             authorText.innerText = "Unknown"
         } else {
-            authorText.innerText = data.quoteAuthor
+            authorText.innerText = data.author
         }
         // Dynamically reduce font size for long quotes
-        if (data.quoteText.length > 120 ) {
+        if (data.content.length > 120 ) {
             quoteText.classList.add('long-quote')
         } else {
             quoteText.classList.remove('long-quote')
         }
-        quoteText.innerText = data.quoteText
+        quoteText.innerText = data.content
         // Stop loader, Show Quote
         hideLoadingSpinner()
     } catch (error) {
